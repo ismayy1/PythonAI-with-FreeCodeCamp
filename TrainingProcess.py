@@ -36,7 +36,7 @@ for feature_name in NUMERIC_COLUMNS:
 
 
 
-def make_input_fn(data_df, label_df, num_epochs=10, shuffle=True, batch_size=32):
+def make_input_fn(data_df, label_df, num_epochs=15, shuffle=True, batch_size=32):
     def input_function():  # inner function, this will be returned
         ds = tf.data.Dataset.from_tensor_slices((dict(data_df), label_df))  # create tf.data.Dataset object with data and its labels
         if shuffle:
@@ -53,6 +53,15 @@ Linear_est = tf.estimator.LinearClassifier(feature_columns=feature_columns)
 Linear_est.train(train_input_fn)  # train
 result = Linear_est.evaluate(eval_input_fn)  # get model metrics/stats by testing on testing data
 
-# clear_output()  # clears console output
-print(result['accuracy'])  # the result variable is simply a dict of stats about our model
-print(result)
+# # clear_output()  # clears console output
+# print(result['accuracy'])  # the result variable is simply a dict of stats about our model
+# print(result)
+
+# result = list(Linear_est.predict(eval_input_fn))
+# print(result[0]['probabilities'][1])    # probabilities of survived -> 1, not survived is index -> 0
+
+
+result = list(Linear_est.predict(eval_input_fn))
+print(dfeval.loc[4])
+print(y_eval.loc[4])
+print(result[4]['probabilities'][1]) 
